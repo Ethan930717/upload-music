@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Upload MP3 File</title>
+</head>
+
+<body>
+    <input type="file" id="fileInput">
+    <button id="uploadButton">Upload</button>
+
+
+</body>
+
+</html>
+<script>
+    document.getElementById('uploadButton').addEventListener('click', function (e) {
+        var fileInput = document.getElementById('fileInput');
+        console.log('fileInput: ', fileInput);
+        var file = fileInput.files[0];
+        console.log('file: ', file);
+        e.preventDefault();
+        var formData = new FormData();
+        formData.append('musicfile', file)
+        fetch('http://localhost:3000/upload', {
+            method: 'POST',
+            body: formData
+        })
+            .then(response => response.json())
+            .then(data => console.log('http://localhost:3000' + data.url))
+            .catch(error => console.error('Error:', error));
+    });
+</script>
