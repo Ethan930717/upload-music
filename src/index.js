@@ -69,7 +69,6 @@ app.use(async (ctx, next) => {
   }
 });
 
-
 // 上传服务
 router.post('/upload', async (ctx) => {
     const file = ctx.request.files.musicfile; // 获取上传的文件
@@ -92,6 +91,3 @@ app.listen(3000, () => {
     Folder(uploadDir)
     console.log('Server started on http://localhost:3000');
 });
-
-
-
