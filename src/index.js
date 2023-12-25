@@ -2,7 +2,7 @@
  * @Author: yanghongxuan
  * @Date: 2023-12-21 21:31:51
  * @LastEditors: yanghongxuan
- * @LastEditTime: 2023-12-23 00:01:21
+ * @LastEditTime: 2023-12-25 22:00:49
  * @Description:
  */
 /*
@@ -14,14 +14,11 @@
  */
 import Koa from 'koa';
 import { koaBody } from 'koa-body';
-import Router from 'koa-router';
 import server from 'koa-static';
 import path from 'path';
-import { __dirname, Folder } from './utils.js';
-
-
+import router from './routes/index.js';
+import { __dirname } from './utils.js';
 const app = new Koa();
-const router = new Router();
 // 跨域
 app.use(async (ctx, next)=> {
     ctx.set('Access-Control-Allow-Origin', '*');
@@ -33,14 +30,11 @@ app.use(async (ctx, next)=> {
       await next();
     }
 });
-// 上传路径
-const uploadDir = path.join(__dirname, '../public/uploads')
 // koabody
 app.use(koaBody({
     multipart: true,
     jsonLimit: '150mb', // body体的大小
     formidable: {
-        uploadDir, // 上传文件的保存路径
         keepExtensions: true,  // 保持文件的扩展名
         maxFileSize: 150 * 1024 * 1024,    // 设置上传文件大小最大限制，默认2M
     }
@@ -68,18 +62,7 @@ app.use(async (ctx, next) => {
     };
   }
 });
-
-// 上传服务
-router.post('/upload', async (ctx) => {
-    const file = ctx.request.files.musicfile; // 获取上传的文件
-    // 返回文件的访问URL
-    console.log('File uploaded successfully: ',file.toJSON());
-    ctx.status = 200
-    ctx.body = {
-        message: 'File uploaded successfully.',
-        url: `/uploads/${file?.newFilename || file.name}` // 返回文件的URL
-    };
-});
+// 初始化路由
 app.use(router.routes()).use(router.allowedMethods());
 // 设置 public 目录作为静态文件目录
 app.use(server(path.join(__dirname, '../public'),{
@@ -88,6 +71,5 @@ app.use(server(path.join(__dirname, '../public'),{
 }))
 
 app.listen(3000, () => {
-    Folder(uploadDir)
     console.log('Server started on http://localhost:3000');
 });
