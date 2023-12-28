@@ -33,10 +33,10 @@ app.use(async (ctx, next)=> {
 // koabody
 app.use(koaBody({
     multipart: true,
-    jsonLimit: '150mb', // body体的大小
+    jsonLimit: '100mb', // body体的大小
     formidable: {
         keepExtensions: true,  // 保持文件的扩展名
-        maxFileSize: 150 * 1024 * 1024,    // 设置上传文件大小最大限制，默认2M
+        maxFileSize: 100 * 1024 * 1024,    // 设置上传文件大小最大限制，默认2M
     }
 }))
 // 上传文件类型限制
