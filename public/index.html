@@ -11,6 +11,7 @@
     <input id="single-music" class="upload-form-file form__file" type="file" accept="audio/*" name="single-music" style="display: none;">
     <img src="indexlogo.png" alt="KIMOJI Music Upload" style="margin-bottom: 20px;">
     <h2>拖放音乐到此处或点击上传</h2>
+    <h3 style="color:#4caf50">为了保证站点试听效率，上传的FLAC文件将会被转码为MP3格式</h3>
     <button id="selectButton">选择文件</button>
     <div id="progressContainer" style="width: 100%; background-color: #ddd; margin-top: 20px;">
         <div id="progressBar" style="height: 20px; width: 0%; background-color: #4CAF50;"></div>
@@ -104,7 +105,8 @@
                 const s3Api = "https://kimojifile.s3.ap-northeast-2.amazonaws.com/music/";
                 const s3UploadedMusicUrl = uploadedMusicUrl.replace('https://file.kimoji.club/music/', s3Api);
                 console.log('S3 上传地址是：', s3UploadedMusicUrl);
-                document.getElementById('uploadedUrl').value = s3UploadedMusicUrl;
+                let modifiedUrl = s3UploadedMusicUrl.replace(/\.flac$/, '.mp3');
+                document.getElementById('uploadedUrl').value = modifiedUrl;
                 document.getElementById('uploadResult').style.display = 'block';
             } else {
                 let errorMsg = '上传失败：' + (xhr.statusText || '无响应文本');
