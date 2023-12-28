@@ -102,7 +102,7 @@
                 const uploadedMusicUrl = api + data.url;
                 console.log('上传地址是：', uploadedMusicUrl);
                 // 替换为 S3 地址的逻辑
-                const s3Api = "https://kimojifile.s3.ap-northeast-2.amazonaws.com/music/";
+                const s3Api = "https://kimojifile.s3.ap-northeast-2.amazonaws.com/";
                 const s3UploadedMusicUrl = uploadedMusicUrl.replace('https://file.kimoji.club/uploads/', s3Api);
                 console.log('S3 上传地址是：', s3UploadedMusicUrl);
                 let modifiedUrl = s3UploadedMusicUrl.replace(/\.flac$/, '.mp3');
