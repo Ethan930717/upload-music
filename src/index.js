@@ -20,9 +20,15 @@ import router from './routes/index.js';
 import { __dirname } from './utils.js';
 const app = new Koa();
 // 跨域
-app.use(async (ctx, next)=> {
-    ctx.set('Access-Control-Allow-Origin', '*');
-    ctx.set('Access-Control-Allow-Headers', 'Content-Type, Content-Length, Authorization, Accept, X-Requested-With , yourHeaderFeild');
+app.use(async (ctx, next) => {
+    const allowedOrigins = ['https://kimoji.club', 'https://mirror.kimoji.club'];
+    const origin = ctx.request.header.origin;
+    if (allowedOrigins.includes(origin)) {
+        ctx.set('Access-Control-Allow-Origin', origin);
+    } else {
+        ctx.set('Access-Control-Allow-Origin', 'false'); // 或者不设置，或者返回错误
+    }
+    ctx.set('Access-Control-Allow-Headers', 'Content-Type, Content-Length, Authorization, Accept, X-Requested-With, yourHeaderFeild');
     ctx.set('Access-Control-Allow-Methods', 'PUT, POST, GET, DELETE, OPTIONS');
     if (ctx.method == 'OPTIONS') {
         ctx.body = 200;
@@ -30,7 +36,6 @@ app.use(async (ctx, next)=> {
         await next();
     }
 });
-// koabody
 app.use(koaBody({
     multipart: true,
     jsonLimit: '100mb', // body体的大小
